@@ -1,0 +1,7 @@
+"use client";
+import {createContext,useCallback,useContext,useEffect,useState} from 'react';import type {BudgetData} from '@/types';
+type State={data:BudgetData|null;loading:boolean;error:string;needsSetup:boolean;refresh:()=>Promise<void>};
+const Context=createContext<State|null>(null);
+export async function request(path:string,method='GET',body?:unknown){const r=await fetch('/api/'+path,{method,headers:body?{'Content-Type':'application/json'}:undefined,body:body?JSON.stringify(body):undefined});const d=await r.json() as BudgetData & {needsSetup?:boolean;error?:string};if(!r.ok)throw new Error(d.error||'Something went wrong. Please try again.');return d;}
+export function BudgetProvider({children}:{children:React.ReactNode}){const [data,setData]=useState<BudgetData|null>(null),[loading,setLoading]=useState(true),[error,setError]=useState(''),[needsSetup,setSetup]=useState(false);const refresh=useCallback(async()=>{try{const d=await request('budget-cycles');setSetup(!!d.needsSetup);setData(d.needsSetup?null:d);setError('');}catch(e){setError((e as Error).message);}finally{setLoading(false);}},[]);useEffect(()=>{void refresh();const id=setInterval(()=>void refresh(),60000);return()=>clearInterval(id)},[refresh]);return <Context.Provider value={{data,loading,error,needsSetup,refresh}}>{children}</Context.Provider>;}
+export function useBudget(){const c=useContext(Context);if(!c)throw new Error('BudgetProvider is required');return c;}

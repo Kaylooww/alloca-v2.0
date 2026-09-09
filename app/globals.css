@@ -1,0 +1,50 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "../vendor/shadcn-tailwind-4.13.0.css";
+@import "../styles/workspace.css";
+@import "../styles/forms.css";
+@import "../styles/landing.css";
+:root {--background:#fff;--foreground:#233d35;--card:#fff;--card-foreground:#233d35;--popover:#fff;--popover-foreground:#233d35;--primary:#087f72;--primary-foreground:#fff;--secondary:#f0f5f1;--secondary-foreground:#26473e;--muted:#f2f5f3;--muted-foreground:#718078;--accent:#e9f3ee;--accent-foreground:#087264;--destructive:#bd3c42;--border:#e5ebe6;--input:#dce5df;--ring:#138b78;--chart-1:#138b78;--chart-2:#f4a65b;--chart-3:#6d81d5;--chart-4:#cb78a0;--chart-5:#55a9b8;--radius:0.75rem;--sidebar:#fff;--sidebar-foreground:#617369;--sidebar-primary:#087f72;--sidebar-primary-foreground:#fff;--sidebar-accent:#e8f3ec;--sidebar-accent-foreground:#176950;--sidebar-border:#e5ebe6;--sidebar-ring:#138b78;}
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --font-sans: Arial, Helvetica, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+    "Liberation Mono", "Courier New", monospace;
+}
+*{box-sizing:border-box}body{margin:0;font-family:'Inter','Aptos','Segoe UI',Arial,sans-serif;color:var(--foreground);font-size:16px;line-height:1.5;background:#f7f9f6}button,input{font:inherit}button,a{-webkit-tap-highlight-color:transparent}button{cursor:pointer}button:disabled{cursor:default;opacity:.6}a{text-decoration:none;color:inherit}button,a,input{outline-offset:4px}h1,h2,h3,p{margin:0}h1,h2,h3{color:#233d35}h1{font-size:32px;line-height:1.25;letter-spacing:-1.1px;font-weight:650}h2{font-size:18px;font-weight:650;letter-spacing:-.3px}h3{font-size:16px;font-weight:650}.muted{color:#77837b}.small{font-size:14px;line-height:1.65}.teal{color:#138b78}.positive{color:#168270}.brand{display:inline-flex;align-items:center;gap:11px}.wordmark{display:block;font-size:29px;font-weight:740;letter-spacing:-1.3px;line-height:1.1;color:#193c31}.brand-tagline{display:block;font-size:12px;color:#708176;margin-top:5px;letter-spacing:-.15px}.pill{display:inline-flex;border:1px solid #dce8dc;background:#eff5e9;color:#4b6b47;border-radius:7px;padding:6px 10px;font-size:12px;font-weight:600;letter-spacing:.2px}.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:1px solid #087f72;background:#087f72;color:white;padding:11px 17px;font-size:14px;font-weight:600;border-radius:8px;transition:background .15s,transform .15s;white-space:nowrap;min-height:43px}.btn:hover{background:#076b61;transform:translateY(-1px)}.btn-outline{background:white;border-color:#dfe6e0;color:#42574c}.btn-outline:hover{background:#edf4ef}.text-link{color:#137967;font-weight:600;font-size:14px;display:inline-flex;align-items:center;gap:5px}.text-link:hover{text-decoration:underline}.icon-btn{display:inline-flex;align-items:center;justify-content:center;border:0;background:transparent;border-radius:6px;width:32px;height:32px;color:#708178}.icon-btn:hover{background:#eef4ef}.card{background:white;border:1px solid #e3e9e2;border-radius:13px;padding:24px;min-width:0}.card-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:20px}.card-heading p{margin-top:4px}.eyebrow{font-size:12px;font-weight:650;letter-spacing:1.6px;color:#6d8375;margin-bottom:11px}.page-heading{display:flex;justify-content:space-between;align-items:center;gap:20px;margin:6px 0 28px}.page-heading>.muted,.page-heading>div>.muted{margin-top:10px;font-size:14px}.actions{display:flex;align-items:center;gap:10px;flex-shrink:0}.empty-state{display:flex;min-height:250px;align-items:center;justify-content:center;flex-direction:column;text-align:center;gap:13px;padding:32px 12px;color:#718277}.empty-state h3,.empty-state h2{color:#466253}.empty-state p{font-size:14px;line-height:1.7}.empty-icon{width:47px;height:47px;display:grid;place-items:center;background:#edf5ed;border-radius:14px;color:#4b8f70}.loading-grid{display:grid;gap:25px}.table-note{font-size:12px;color:#7b877f;margin-top:20px;line-height:1.6}.amount{font-weight:650;font-variant-numeric:tabular-nums;white-space:nowrap}[data-slot=table]{font-size:14px}[data-slot=table-head]{color:#89928b;font-size:12px;font-weight:500;height:42px}[data-slot=table-cell]{padding-top:15px;padding-bottom:15px}[data-slot=table-row]{border-color:#eef1ed}[data-slot=table-row]:last-child{border:0}[data-slot=progress]{height:6px}::selection{background:#c8ecca}
+@media(max-width:1150px){.page-heading{align-items:flex-start;flex-direction:column}h1{font-size:29px}}
+@media(max-width:650px){h1{font-size:26px;letter-spacing:-.7px}.card{padding:19px}.actions{flex-wrap:wrap}.eyebrow{font-size:12px}.brand-tagline{display:none}.page-heading{margin-bottom:22px}.btn{padding:10px 14px}.card-heading{align-items:flex-start}.card-heading h2{font-size:17px}}

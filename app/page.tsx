@@ -1,0 +1,1 @@
+import {redirect} from 'next/navigation';import {getUser} from '@/lib/auth/user';export const dynamic='force-dynamic';export default async function Page(){redirect(await getUser()?'/dashboard':'/welcome');}

@@ -1,0 +1,2 @@
+import {BrandHeader} from '@/components/branding/brand-header';import {VerificationForm} from '@/components/auth/verification-form';
+export default async function Page({searchParams}:{searchParams:Promise<{email?:string}>}){const {email}=await searchParams;return <main className="account-page"><section className="card account-card"><BrandHeader/><h1>Check your inbox.</h1><p className="muted">Enter the code from Alloca to verify your email. Codes expire; you can request a fresh one here.</p><VerificationForm initialEmail={email?.slice(0,254)||''}/></section></main>;}

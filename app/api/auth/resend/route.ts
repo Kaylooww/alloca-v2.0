@@ -1,0 +1,2 @@
+import {authEndpoint} from '@/lib/auth/endpoint';import {emailSchema} from '@/lib/validation/auth';
+export const POST=authEndpoint(async(r,c)=>{const {email}=emailSchema.parse(await r.json());const {error}=await c.auth.resend({type:'signup',email});if(error?.status===429)return {error:'Please wait before requesting another code.'};if(error)return {error:'Unable to send a verification code. Please try again later.'};return {ok:true};});

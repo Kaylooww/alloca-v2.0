@@ -1,0 +1,1 @@
+import {authEndpoint} from '@/lib/auth/endpoint';export const POST=authEndpoint(async(_r,c)=>{const {error}=await c.auth.signOut({scope:'local'});return error?{error:'Unable to log out. Try again.'}:{ok:true};});

@@ -1,0 +1,1 @@
+CREATE UNIQUE INDEX `transactions_one_allowance_per_cycle` ON `transactions` (`user_id`,`cycle_id`) WHERE "transactions"."kind" = 'allowance';

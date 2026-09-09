@@ -1,0 +1,3 @@
+"use client";
+import {useState} from 'react';import {LogOut} from 'lucide-react';import {toast} from 'sonner';
+export function LogoutButton({className=''}:{className?:string}){const [busy,setBusy]=useState(false);return <button className={className} disabled={busy} onClick={async()=>{setBusy(true);try{const r=await fetch('/api/auth/logout',{method:'POST'});const d=await r.json();if(!r.ok||d.error)throw new Error(d.error||'Unable to log out');window.location.assign('/login')}catch(e){toast.error((e as Error).message);setBusy(false)}}}><LogOut size={18}/>{busy?'Logging out…':'Log out'}</button>;}
