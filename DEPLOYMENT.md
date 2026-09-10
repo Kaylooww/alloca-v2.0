@@ -138,3 +138,11 @@ Official references:
 - https://supabase.com/docs/guides/auth/auth-email-templates
 - https://docs.turso.tech/sdk/ts/reference
 - https://vercel.com/docs/frameworks/full-stack/nextjs
+
+## Resend testing sender restriction
+
+Do not use `onboarding@resend.dev` for general registrations. It can send only to the email associated with your Resend account. Verify your own domain in Resend and change Supabase’s SMTP Sender email to an address on that verified domain. See **REGISTRATION-FIX.md** for the exact configuration and code-update steps.
+
+## Installed app and offline mode
+
+See **OFFLINE-UPDATE.md** for upgrade instructions, session settings, offline readiness, device storage, and phone testing. New deployments also need `npm run db:migrate` before syncing. Keep the default `npm run build` command so the offline worker receives a new version for every build.

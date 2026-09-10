@@ -1,0 +1,1 @@
+import {readFile,writeFile} from 'node:fs/promises';const id=(await readFile('.next/BUILD_ID','utf8')).trim();const source=await readFile('public/sw.js','utf8');await writeFile('public/sw.js',source.replace(/const VERSION='[^']+';/,`const VERSION='alloca-shell-${id}';`));console.log('Offline shell version updated.');

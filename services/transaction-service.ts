@@ -1,3 +1,4 @@
+import {operationDate,operationId} from '@/lib/offline/operation-context';
 import { db, rows } from '@/lib/database/client';
 import { currentCycle } from './budget-service';
 import { HttpError } from '@/lib/auth/api';
@@ -23,7 +24,7 @@ export async function addTransaction(user: string, input: unknown) {
         guard = "? <= COALESCE((SELECT SUM(CASE WHEN kind='saving' THEN amount WHEN kind='withdrawal' THEN -amount ELSE 0 END) FROM transactions WHERE user_id=? AND goal_id=?),0)";
         args = [t.amount, user, t.goalId];
     }
-    const result = await db().prepare(`INSERT INTO transactions(id,user_id,cycle_id,kind,amount,category,note,date,goal_id) SELECT ?,?,?,?,?,?,?,?,? WHERE ${guard}`).bind(crypto.randomUUID(), user, cycle.id, t.kind, t.amount, t.category, t.note, new Date().toISOString(), t.goalId ?? null, ...args).run();
+    const result = await db().prepare(`INSERT INTO transactions(id,user_id,cycle_id,kind,amount,category,note,date,goal_id) SELECT ?,?,?,?,?,?,?,?,? WHERE ${guard}`).bind(operationId(), user, cycle.id, t.kind, t.amount, t.category, t.note, operationDate().toISOString(), t.goalId ?? null, ...args).run();
     if (!result.meta.changes)
         throw new HttpError(400, 'Insufficient available balance for this transfer.');
     return { ok: true };

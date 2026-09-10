@@ -1,7 +1,7 @@
 # Verification results
 
-- 16 automated tests passed, covering money calculations, account isolation, weekly rollover, savings limits, expense updates, category archival, personal-email acceptance, verified identity, invalid verification codes and cross-origin logout rejection.
-- Production Next.js build and its TypeScript checks passed.
-- Both database migrations applied to a fresh local database. Running migration again succeeded without repeating changes.
-- Authentication-provider calls are mocked in tests. Live verification-email delivery, real Supabase sessions and a hosted Turso connection require the deployment owner’s credentials and have not been tested.
-- Browser/end-to-end tests were not run. Follow DEPLOYMENT.md’s live acceptance checklist after configuring your services.
+- 30 automated tests cover the existing budgeting/auth behavior plus offline reductions, per-user sync, idempotent retries after lost responses, same-record conflicts, original timestamps and weekly carryover, transaction rollback, local queue persistence, and service-worker asset/offline routing.
+- SQLite integration tests use a local database and mocked authenticated identities. IndexedDB and the Cache API are emulated in tests.
+- Production Next.js build and its TypeScript checks are run for this version.
+- Live Supabase login, SMTP delivery, remote Turso synchronization and physical phone/browser airplane-mode behavior require your deployment and have not been exercised with your credentials.
+- Follow OFFLINE-UPDATE.md’s phone acceptance checklist after deploying and migrating.

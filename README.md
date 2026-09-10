@@ -4,6 +4,10 @@
 
 A full-stack, multi-file allowance and savings app you can upload to your own GitHub repository and deploy independently.
 
+## Phone/offline update
+
+Read **OFFLINE-UPDATE.md** before updating an existing Vercel installation. This version includes persistent sign-in cookies, an installable PWA, a complete cached budget workspace, IndexedDB storage, queued offline edits, conflict handling, and idempotent server sync. Run the new database migration before use.
+
 ## What changed in this download
 
 - Anyone can register with an accessible email address: Gmail, Yahoo, Outlook, a custom domain, or a school email.

@@ -1,0 +1,9 @@
+import type {OfflineRecord} from './types';
+let channel:BroadcastChannel|undefined;
+function broadcast(){if(typeof BroadcastChannel!=='undefined'){if(!channel){channel=new BroadcastChannel('alloca-device');channel.onmessage=()=>window.dispatchEvent(new Event('alloca-data'));}return channel}}
+let connection:Promise<IDBDatabase>|undefined;
+function open(){broadcast();return connection??=new Promise<IDBDatabase>((resolve,reject)=>{const request=indexedDB.open('alloca-offline',1);request.onupgradeneeded=()=>request.result.createObjectStore('state');request.onsuccess=()=>resolve(request.result);request.onerror=()=>reject(request.error)});}
+export async function readRecord():Promise<OfflineRecord|null>{const db=await open();return new Promise((resolve,reject)=>{const request=db.transaction('state').objectStore('state').get('active');request.onsuccess=()=>resolve(request.result||null);request.onerror=()=>reject(request.error)});}
+/** Snapshot + queue are committed together, including across multiple open tabs. */
+export async function updateRecord<T>(change:(old:OfflineRecord|null)=>{record:OfflineRecord|null;result:T}):Promise<T>{const db=await open();return new Promise((resolve,reject)=>{const tx=db.transaction('state','readwrite'),store=tx.objectStore('state'),request=store.get('active');let result:T;request.onsuccess=()=>{try{const value=change(request.result||null);result=value.result;if(value.record)store.put(value.record,'active');else store.delete('active')}catch(e){tx.abort();reject(e)}};tx.oncomplete=()=>{window.dispatchEvent(new Event('alloca-data'));broadcast()?.postMessage('changed');resolve(result)};tx.onerror=()=>reject(tx.error);tx.onabort=()=>reject(tx.error||new Error('Unable to save on this device.'));});}
+export async function clearOffline(){await updateRecord(()=>({record:null,result:null}));localStorage.removeItem('alloca-device-user');window.dispatchEvent(new Event('alloca-cleared'));}

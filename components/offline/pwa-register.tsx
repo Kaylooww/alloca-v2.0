@@ -1,0 +1,3 @@
+"use client";
+import {useEffect} from 'react';
+export function PwaRegister(){useEffect(()=>{if(!('serviceWorker' in navigator)||process.env.NODE_ENV!=='production')return;void navigator.serviceWorker.register('/sw.js',{scope:'/',updateViaCache:'none'}).then(async registration=>{await registration.update();await navigator.serviceWorker.ready;window.dispatchEvent(new Event('alloca-status'))}).catch(()=>window.dispatchEvent(new Event('alloca-pwa-error')));const message=(e:MessageEvent)=>{if(e.data?.type==='ALLOCA_OFFLINE_READY')window.dispatchEvent(new Event('alloca-status'))};navigator.serviceWorker.addEventListener('message',message);return()=>navigator.serviceWorker.removeEventListener('message',message)},[]);return null;}

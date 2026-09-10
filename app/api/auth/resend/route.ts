@@ -1,2 +1,9 @@
-import {authEndpoint} from '@/lib/auth/endpoint';import {emailSchema} from '@/lib/validation/auth';
-export const POST=authEndpoint(async(r,c)=>{const {email}=emailSchema.parse(await r.json());const {error}=await c.auth.resend({type:'signup',email});if(error?.status===429)return {error:'Please wait before requesting another code.'};if(error)return {error:'Unable to send a verification code. Please try again later.'};return {ok:true};});
+import { authEndpoint } from '@/lib/auth/endpoint';
+import { emailSchema } from '@/lib/validation/auth';
+import { registrationFailure } from '@/lib/auth/registration-error';
+export const POST = authEndpoint(async (request, client) => {
+  const { email } = emailSchema.parse(await request.json());
+  const { error } = await client.auth.resend({ type: 'signup', email });
+  if (error) return registrationFailure(error, 'resend');
+  return { ok: true };
+});

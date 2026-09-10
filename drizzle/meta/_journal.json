@@ -15,6 +15,13 @@
       "when": 1788965791449,
       "tag": "0001_simple_expediter",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1789010861430,
+      "tag": "0002_lush_bill_hollister",
+      "breakpoints": true
     }
   ]
 }
