@@ -4,6 +4,9 @@
 @import "../styles/workspace.css";
 @import "../styles/forms.css";
 @import "../styles/landing.css";
+@import "../styles/theme.css";
+@import "../styles/help.css";
+@custom-variant dark (&:is(.dark *));
 :root {--background:#fff;--foreground:#233d35;--card:#fff;--card-foreground:#233d35;--popover:#fff;--popover-foreground:#233d35;--primary:#087f72;--primary-foreground:#fff;--secondary:#f0f5f1;--secondary-foreground:#26473e;--muted:#f2f5f3;--muted-foreground:#718078;--accent:#e9f3ee;--accent-foreground:#087264;--destructive:#bd3c42;--border:#e5ebe6;--input:#dce5df;--ring:#138b78;--chart-1:#138b78;--chart-2:#f4a65b;--chart-3:#6d81d5;--chart-4:#cb78a0;--chart-5:#55a9b8;--radius:0.75rem;--sidebar:#fff;--sidebar-foreground:#617369;--sidebar-primary:#087f72;--sidebar-primary-foreground:#fff;--sidebar-accent:#e8f3ec;--sidebar-accent-foreground:#176950;--sidebar-border:#e5ebe6;--sidebar-ring:#138b78;}
 @theme inline {
   --color-background: var(--background);

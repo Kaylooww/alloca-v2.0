@@ -1,5 +1,5 @@
 /* Only cache the public app shell and build assets. Never cache auth/API responses or private SSR HTML. */
-const VERSION='alloca-shell-X5v5vp50duU4JcIhbieGl';
+const VERSION='alloca-shell-TMisEdF2We8WkJokkrt5N';
 const PAGES=new Set(['/','/offline','/dashboard','/expenses','/savings','/reports','/categories','/profile']);
 self.addEventListener('install',event=>event.waitUntil((async()=>{
  const cache=await caches.open(VERSION);const response=await fetch('/offline',{cache:'reload'});if(!response.ok)throw new Error('Offline shell download failed');const html=await response.clone().text();await cache.put('/offline',response);

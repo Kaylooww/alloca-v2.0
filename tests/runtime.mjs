@@ -1,6 +1,127 @@
-import {readFile,readdir} from 'node:fs/promises';import {mkdtempSync,rmSync} from 'node:fs';import {tmpdir} from 'node:os';import {join} from 'node:path';import {pathToFileURL} from 'node:url';const testDir=mkdtempSync(join(tmpdir(),'alloca-test-'));process.on('exit',()=>{databaseClient().close();rmSync(testDir,{recursive:true,force:true})});import {databaseClient} from '../lib/database/client.ts';
-process.env.TURSO_DATABASE_URL=pathToFileURL(join(testDir,'test.db')).href;process.env.NEXT_PUBLIC_SUPABASE_URL='https://test.supabase.co';process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY='test-key';
-let identity='alice';export function signIn(id='alice'){identity=id}export async function getUser(){return identity?{userId:identity,email:identity+'@example.com',displayName:identity,fullName:identity}:null}export function redirect(path){throw new Error('Redirect '+path)}
-export const provider={user:{id:'alice',email:'alice@example.com',email_confirmed_at:'2026-01-01'},error:null,session:null,calls:[],signOuts:0};
-export async function authClient(){return {auth:{async getUser(){return {data:{user:provider.user},error:provider.error}},async signUp(v){provider.calls.push(v);return {data:{user:provider.user,session:provider.session},error:provider.error}},async signInWithPassword(v){provider.calls.push(v);return {data:{user:provider.user},error:provider.error}},async signOut(){provider.signOuts++;return {error:null}},async verifyOtp(v){provider.calls.push(v);return {error:provider.error}},async resend(v){provider.calls.push(v);return {error:provider.error}},async resetPasswordForEmail(v){provider.calls.push(v);return {error:provider.error}},async updateUser(v){provider.calls.push(v);return {error:provider.error}}}};}
-export async function reset(){const client=databaseClient();for(const table of ['sync_operations','transactions','goals','categories','cycles','profiles'])await client.execute('DROP TABLE IF EXISTS '+table);for(const file of (await readdir('drizzle')).filter(f=>f.endsWith('.sql')).sort()){for(const sql of (await readFile('drizzle/'+file,'utf8')).split('--> statement-breakpoint').map(s=>s.trim()).filter(Boolean))await client.execute(sql);}signIn();Object.assign(provider,{user:{id:'alice',email:'alice@example.com',email_confirmed_at:'2026-01-01'},error:null,session:null,calls:[],signOuts:0});return {prepare(sql){return {async run(...args){return client.execute({sql,args})}}}}}
+import { readFile, readdir } from 'node:fs/promises';
+import { mkdtempSync, rmSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
+import { pathToFileURL } from 'node:url';
+import { databaseClient } from '../lib/database/client.ts';
+
+const testDir = mkdtempSync(join(tmpdir(), 'alloca-test-'));
+
+process.on('exit', () => {
+  try {
+    const client = databaseClient();
+    if (client && typeof client.close === 'function') {
+      client.close();
+    }
+  } catch {}
+
+  try {
+    rmSync(testDir, {
+      recursive: true,
+      force: true,
+      maxRetries: 5,
+      retryDelay: 100,
+    });
+  } catch (error) {
+    if (error.code !== 'EPERM' && error.code !== 'EBUSY') {
+      throw error;
+    }
+  }
+});
+
+process.env.TURSO_DATABASE_URL = pathToFileURL(join(testDir, 'test.db')).href;
+process.env.NEXT_PUBLIC_SUPABASE_URL = 'https://test.supabase.co';
+process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY = 'test-key';
+
+let identity = 'alice';
+export function signIn(id = 'alice') {
+  identity = id;
+}
+
+export async function getUser() {
+  return identity
+    ? { userId: identity, email: identity + '@example.com', displayName: identity, fullName: identity }
+    : null;
+}
+
+export function redirect(path) {
+  throw new Error('Redirect ' + path);
+}
+
+export const provider = {
+  user: { id: 'alice', email: 'alice@example.com', email_confirmed_at: '2026-01-01' },
+  error: null,
+  session: null,
+  calls: [],
+  signOuts: 0,
+};
+
+export async function authClient() {
+  return {
+    auth: {
+      async getUser() {
+        return { data: { user: provider.user }, error: provider.error };
+      },
+      async signUp(v) {
+        provider.calls.push(v);
+        return { data: { user: provider.user, session: provider.session }, error: provider.error };
+      },
+      async signInWithPassword(v) {
+        provider.calls.push(v);
+        return { data: { user: provider.user }, error: provider.error };
+      },
+      async signOut() {
+        provider.signOuts++;
+        return { error: null };
+      },
+      async verifyOtp(v) {
+        provider.calls.push(v);
+        return { error: provider.error };
+      },
+      async resend(v) {
+        provider.calls.push(v);
+        return { error: provider.error };
+      },
+      async resetPasswordForEmail(v) {
+        provider.calls.push(v);
+        return { error: provider.error };
+      },
+      async updateUser(v) {
+        provider.calls.push(v);
+        return { error: provider.error };
+      },
+    },
+  };
+}
+
+export async function reset() {
+  const client = databaseClient();
+  for (const table of ['sync_operations', 'transactions', 'goals', 'categories', 'cycles', 'profiles']) {
+    await client.execute('DROP TABLE IF EXISTS ' + table);
+  }
+  for (const file of (await readdir('drizzle')).filter((f) => f.endsWith('.sql')).sort()) {
+    for (const sql of (await readFile('drizzle/' + file, 'utf8'))
+      .split('--> statement-breakpoint')
+      .map((s) => s.trim())
+      .filter(Boolean)) {
+      await client.execute(sql);
+    }
+  }
+  signIn();
+  Object.assign(provider, {
+    user: { id: 'alice', email: 'alice@example.com', email_confirmed_at: '2026-01-01' },
+    error: null,
+    session: null,
+    calls: [],
+    signOuts: 0,
+  });
+  return {
+    prepare(sql) {
+      return {
+        async run(...args) {
+          return client.execute({ sql, args });
+        },
+      };
+    },
+  };
+}

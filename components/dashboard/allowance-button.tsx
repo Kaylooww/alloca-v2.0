@@ -9,11 +9,11 @@ export function AllowanceButton() { const { data, refresh } = useBudget(); const
     await request('budget-cycles', 'POST');
     await refresh();
     setOpen(false);
-    toast.success('Allowance received. You’re ready for the week.');
+    toast.success('Allowance received. You’re ready for this cycle.');
 }
 catch (e) {
     toast.error((e as Error).message);
 }
 finally {
     setBusy(false);
-} } return <Dialog open={open} onOpenChange={setOpen}><DialogTrigger asChild><button className="receive-button" disabled={received}>{received ? '✓ Allowance received' : '＋ Record allowance received'}</button></DialogTrigger><DialogContent><DialogTitle>Has your allowance arrived?</DialogTitle><DialogDescription>Confirm to add {money(data.profile.allowance)} to this week’s available balance. You can record your weekly allowance once per cycle.</DialogDescription><button className="btn" disabled={busy} onClick={save}>{busy ? 'Recording…' : 'Yes, I received ' + money(data.profile.allowance)}</button><a className="text-link" href="/profile">Change my planned allowance</a></DialogContent></Dialog>; }
+} } return <Dialog open={open} onOpenChange={setOpen}><DialogTrigger asChild><button className="receive-button" disabled={received}>{received ? '✓ Allowance received' : '＋ Record allowance received'}</button></DialogTrigger><DialogContent><DialogTitle>Has your allowance arrived?</DialogTitle><DialogDescription>Confirm to add {money(data.profile.allowance)} to this cycle’s available balance. You can record your planned allowance once per cycle.</DialogDescription><button className="btn" disabled={busy} onClick={save}>{busy ? 'Recording…' : 'Yes, I received ' + money(data.profile.allowance)}</button><a className="text-link" href="/profile">Change my planned allowance</a></DialogContent></Dialog>; }

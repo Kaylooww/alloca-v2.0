@@ -4,7 +4,7 @@ import {withOperation,operationDate} from '@/lib/offline/operation-context';
 import {operationSchema} from '@/lib/offline/schema';
 import {profileSchema,categorySchema,goalSchema} from '@/lib/validation/schemas';
 import {addTransaction,editExpense,deleteExpense} from './transaction-service';
-import {getBudget,receiveAllowance} from './budget-service';
+import {getBudget,receiveAllowance,currentCycle} from './budget-service';
 import {totals} from '@/lib/calculations/budget';
 import type {Cycle,Transaction} from '@/types';
 import type {Operation} from '@/lib/offline/types';
@@ -24,7 +24,7 @@ await withOperation(op,async()=>{
  else if(path==='savings-goals'&&op.method==='POST'){const goal=goalSchema.parse(op.body);await db().prepare('INSERT INTO goals(id,user_id,name,target,due,created) VALUES(?,?,?,?,?,?)').bind(op.id,userId,goal.name,goal.target,goal.due||null,operationDate().toISOString()).run()}
  else if(path==='categories'&&op.method==='POST'){const c=categorySchema.parse(op.body);if((await rows('SELECT id FROM categories WHERE user_id=? AND lower(name)=lower(?)',userId,c.name)).length)throw new HttpError(409,'A category with this name already exists on another device.');await db().prepare('INSERT INTO categories(id,user_id,name,color) VALUES(?,?,?,?)').bind(op.id,userId,c.name,c.color).run()}
  else if(path==='categories'&&op.method==='PATCH'){await checkBefore(op,'categories',id,['archived']);if(op.body.archived!==0&&op.body.archived!==1)throw new HttpError(400,'Invalid category state.');await db().prepare('UPDATE categories SET archived=? WHERE id=? AND user_id=?').bind(op.body.archived,id,userId).run()}
- else if(path==='profile'&&op.method==='POST'){await checkBefore(op,'profiles',userId,['name','allowance']);const p=profileSchema.parse(op.body);await db().prepare('UPDATE profiles SET name=?,allowance=? WHERE id=?').bind(p.name,p.allowance,userId).run()}
+ else if(path==='profile'&&op.method==='POST'){const active=await currentCycle(userId);await checkBefore(op,'profiles',userId,op.before?.frequency===undefined?['name','allowance']:['name','allowance','frequency']);const p=profileSchema.parse(op.body);await db().prepare('UPDATE profiles SET name=?,allowance=?,frequency=COALESCE(?,frequency) WHERE id=?').bind(p.name,p.allowance,op.body.frequency===undefined?null:p.frequency,userId).run();if(op.body.frequency!==undefined)await db().prepare('DELETE FROM cycles WHERE user_id=? AND start>=? AND NOT EXISTS(SELECT 1 FROM transactions WHERE cycle_id=cycles.id)').bind(userId,active.end).run()}
  else throw new HttpError(400,'Unsupported offline change.');
 });
 await reflowCycles(userId);

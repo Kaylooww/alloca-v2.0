@@ -74,3 +74,11 @@ This is a fresh independent deployment. Existing records in the earlier private 
 ## Verification limits
 
 Automated tests use an isolated real SQLite database and mocked authentication-provider responses. A successful code verification is ultimately enforced by Supabase. Live email delivery and real sign-in require your Supabase project and SMTP configuration; they have not been exercised with your credentials. Follow the deployment checklist before inviting users.
+
+## Appearance
+
+Choose Light, Dark, or System in the header or Profile & settings. Alloca’s soft dark theme covers authentication, budgeting, charts and offline screens. The setting stays on your device. See [DARK-THEME-UPDATE.md](DARK-THEME-UPDATE.md) to upgrade an existing deployment.
+
+## Flexible allowance and getting started
+
+Alloca welcomes anyone managing everyday money. Choose daily, weekly or monthly allowances with presets or custom amounts. A first-use tutorial explains the app after setup, and the corner Help button replays it offline or online. See [ALLOWANCE-AND-TUTORIAL-UPDATE.md](ALLOWANCE-AND-TUTORIAL-UPDATE.md) for the required migration and deployment steps. Earlier documentation describing weekly-only cycles reflects previous releases; this guide describes current behavior.

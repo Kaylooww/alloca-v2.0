@@ -3,6 +3,7 @@ export type Profile = {
     name: string;
     email: string;
     allowance: number;
+    frequency?: 'daily' | 'weekly' | 'monthly';
     created: string;
 };
 export type Cycle = {
@@ -11,6 +12,7 @@ export type Cycle = {
     start: string;
     end: string;
     carry: number;
+    frequency?: 'daily' | 'weekly' | 'monthly';
 };
 export type Transaction = {
     id: string;

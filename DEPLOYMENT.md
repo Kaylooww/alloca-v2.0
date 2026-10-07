@@ -1,3 +1,5 @@
+> Updating an existing deployment? Read [ALLOWANCE-AND-TUTORIAL-UPDATE.md](ALLOWANCE-AND-TUTORIAL-UPDATE.md) first. This release requires `npm run db:migrate` against your existing Turso database before deploying.
+
 # Deploy Alloca from your GitHub
 
 **Alloca — Give every money a purpose**
